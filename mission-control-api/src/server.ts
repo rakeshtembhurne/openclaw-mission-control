@@ -8,6 +8,10 @@ import express from 'express';
 import cors from 'cors';
 import { WebSocketServer, WebSocket } from 'ws';
 import { createServer } from 'http';
+import { config } from 'dotenv';
+// Load environment variables
+config({ path: '.env' });
+config();
 import { env } from '../config/environment.js';
 import { initializeDatabase } from '../config/database.js';
 import agentsRouter from '../routes/agents.js';
@@ -22,7 +26,7 @@ const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
 // WebSocket clients
-const clients = Set<WebSocket>();
+const clients = new Set<WebSocket>();
 
 // Middleware
 app.use(cors());
