@@ -17,7 +17,7 @@
  * Cron entry: 30 23 * * * bun /path/to/daily-standup.ts
  */
 
-import Database from 'better-sqlite3';
+import { Database } from 'bun:sqlite';
 import { writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
@@ -65,7 +65,7 @@ interface DailySummary {
  * Main daily standup function
  */
 function generateDailyStandup(): { success: boolean; message: string } {
-  const db = new Database(DB_PATH, { readonly: false });
+  const db = new Database(DB_PATH);
 
   try {
     console.log('📋 OpenClaw Mission Control - Daily Standup Generator');
@@ -74,7 +74,7 @@ function generateDailyStandup(): { success: boolean; message: string } {
     console.log('');
 
     // Enable foreign keys
-    db.pragma('foreign_keys = ON');
+    db.exec('PRAGMA foreign_keys = ON');
 
     // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split('T')[0];

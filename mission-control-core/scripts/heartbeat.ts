@@ -19,7 +19,7 @@
  * - 1: Error occurred
  */
 
-import Database from 'better-sqlite3';
+import { Database } from 'bun:sqlite';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
@@ -72,14 +72,14 @@ if (!AGENT_NAME) {
  * Main heartbeat function
  */
 function heartbeat(agentName: string): { success: boolean; heartbeatOk: boolean; message: string } {
-  const db = new Database(DB_PATH, { readonly: false });
+  const db = new Database(DB_PATH);
   let tasksChecked = 0;
   let notificationsProcessed = 0;
   let errorMessage: string | null = null;
 
   try {
     // Enable foreign keys
-    db.pragma('foreign_keys = ON');
+    db.exec('PRAGMA foreign_keys = ON');
 
     // Load agent configuration
     const agent = getAgent(db, agentName);
@@ -181,7 +181,7 @@ function heartbeat(agentName: string): { success: boolean; heartbeatOk: boolean;
 /**
  * Get agent from database
  */
-function getAgent(db: Database.Database, agentName: string): Agent | null {
+function getAgent(db: Database, agentName: string): Agent | null {
   const stmt = db.prepare(`
     SELECT * FROM agents WHERE LOWER(name) = LOWER(?)
   `);
@@ -191,7 +191,7 @@ function getAgent(db: Database.Database, agentName: string): Agent | null {
 /**
  * Get pending tasks for agent
  */
-function getPendingTasks(db: Database.Database, agentName: string): Task[] {
+function getPendingTasks(db: Database, agentName: string): Task[] {
   const stmt = db.prepare(`
     SELECT * FROM tasks
     WHERE assigned_agent = ?
@@ -204,7 +204,7 @@ function getPendingTasks(db: Database.Database, agentName: string): Task[] {
 /**
  * Get unread notifications for agent
  */
-function getUnreadNotifications(db: Database.Database, agentName: string): Notification[] {
+function getUnreadNotifications(db: Database, agentName: string): Notification[] {
   const stmt = db.prepare(`
     SELECT * FROM notifications
     WHERE target_agent = ?
@@ -217,26 +217,22 @@ function getUnreadNotifications(db: Database.Database, agentName: string): Notif
 /**
  * Mark notifications as read
  */
-function markNotificationsAsRead(db: Database.Database, notificationIds: number[]): void {
+function markNotificationsAsRead(db: Database, notificationIds: number[]): void {
   if (notificationIds.length === 0) return;
 
   const stmt = db.prepare(`
     UPDATE notifications SET is_read = 1 WHERE id = ?
   `);
 
-  const updateMany = db.transaction((ids: number[]) => {
-    for (const id of ids) {
-      stmt.run(id);
-    }
-  });
-
-  updateMany(notificationIds);
+  for (const id of notificationIds) {
+    stmt.run(id);
+  }
 }
 
 /**
  * Update agent heartbeat timestamp and status
  */
-function updateAgentHeartbeat(db: Database.Database, agentName: string, status: string): void {
+function updateAgentHeartbeat(db: Database, agentName: string, status: string): void {
   const stmt = db.prepare(`
     UPDATE agents
     SET last_heartbeat = strftime('%s', 'now'),
@@ -251,7 +247,7 @@ function updateAgentHeartbeat(db: Database.Database, agentName: string, status: 
  * Log heartbeat to database
  */
 function logHeartbeat(
-  db: Database.Database,
+  db: Database,
   agentName: string,
   status: string,
   tasksChecked: number,

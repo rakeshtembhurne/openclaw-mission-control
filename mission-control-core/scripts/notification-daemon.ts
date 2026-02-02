@@ -13,7 +13,7 @@
  * This script is designed to be idempotent and safe to run multiple times.
  */
 
-import Database from 'better-sqlite3';
+import { Database } from 'bun:sqlite';
 import { join } from 'path';
 
 // Configuration
@@ -50,7 +50,7 @@ interface Activity {
  * Main notification daemon function
  */
 function runNotificationDaemon(): { success: boolean; notificationsCreated: number; message: string } {
-  const db = new Database(DB_PATH, { readonly: false });
+  const db = new Database(DB_PATH);
   let notificationsCreated = 0;
   let errorMessage: string | null = null;
 
@@ -61,7 +61,7 @@ function runNotificationDaemon(): { success: boolean; notificationsCreated: numb
     console.log('');
 
     // Enable foreign keys
-    db.pragma('foreign_keys = ON');
+    db.exec('PRAGMA foreign_keys = ON');
 
     // Process @mentions in messages
     const mentionNotifications = processMentions(db);

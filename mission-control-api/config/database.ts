@@ -1,12 +1,12 @@
 /**
  * OpenClaw Mission Control - Database Configuration
  *
- * SQLite database connection and initialization
+ * SQLite database connection using Bun's native SQLite (bun:sqlite)
  */
 
-import Database from 'better-sqlite3';
-import { join } from 'path';
+import { Database } from 'bun:sqlite';
 import { existsSync } from 'fs';
+import { join } from 'path';
 
 // Database path configuration
 const DB_PATH = process.env.DB_PATH || join(process.env.HOME || '', '.openclaw/workspace/mission-control/mission-control.db');
@@ -14,17 +14,17 @@ const DB_PATH = process.env.DB_PATH || join(process.env.HOME || '', '.openclaw/w
 /**
  * Get database connection
  */
-export function getDatabase(): Database.Database {
-  const db = new Database(DB_PATH, { readonly: false });
+export function getDatabase(): Database {
+  const db = new Database(DB_PATH);
 
   // Enable foreign keys
-  db.pragma('foreign_keys = ON');
+  db.exec('PRAGMA foreign_keys = ON');
 
   // Enable WAL mode for better concurrent access
-  db.pragma('journal_mode = WAL');
+  db.exec('PRAGMA journal_mode = WAL');
 
   // Set busy timeout (5 seconds)
-  db.pragma('busy_timeout = 5000');
+  db.exec('PRAGMA busy_timeout = 5000');
 
   return db;
 }
@@ -40,10 +40,12 @@ export function initializeDatabase(): void {
 
   console.log('📄 Initializing database from schema...');
 
-  const schemaPath = join(process.env.WORKSPACE_PATH || join(process.env.HOME || '', '.openclaw/workspace/mission-control'), '../projects/mission-control/mission-control-core/schema.sql');
+  const schemaPath = join(
+    process.env.WORKSPACE_PATH || join(process.env.HOME || '', '.openclaw/workspace/mission-control'),
+    '../projects/mission-control/mission-control-core/schema.sql'
+  );
 
-  const { readFileSync } = require('fs');
-  const schema = readFileSync(schemaPath, 'utf-8');
+  const schema = require('fs').readFileSync(schemaPath, 'utf-8');
 
   const db = getDatabase();
   db.exec(schema);

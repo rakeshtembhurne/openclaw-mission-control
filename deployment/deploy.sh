@@ -20,7 +20,17 @@ set -e
 WORKSPACE="${WORKSPACE:-$HOME/.openclaw/workspace}"
 MISSION_CONTROL_DIR="$WORKSPACE/mission-control"
 PROJECTS_DIR="$WORKSPACE/projects"
-REPO_DIR="$PROJECTS_DIR/openclaw-mission-control"
+
+# Auto-detect repository directory (works whether it's mission-control or openclaw-mission-control)
+if [ -d "$PROJECTS_DIR/mission-control" ]; then
+    REPO_DIR="$PROJECTS_DIR/mission-control"
+elif [ -d "$PROJECTS_DIR/openclaw-mission-control" ]; then
+    REPO_DIR="$PROJECTS_DIR/openclaw-mission-control"
+else
+    echo "Error: Cannot find mission-control directory in $PROJECTS_DIR"
+    exit 1
+fi
+
 BUN_PATH="${BUN_PATH:-$HOME/.bun/bin/bun}"
 
 # Colors for output
