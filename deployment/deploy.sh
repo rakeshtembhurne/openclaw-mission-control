@@ -31,7 +31,7 @@ else
     exit 1
 fi
 
-BUN_PATH="${BUN_PATH:-$HOME/.bun/bin/bun}"
+BUN_PATH="${BUN_PATH:-$HOME/.bun/bin}"
 
 # Colors for output
 RED='\033[0;31m'
@@ -50,12 +50,19 @@ echo "  Repository: $REPO_DIR"
 echo "  Bun: $BUN_PATH"
 echo ""
 
-# Check if Bun is installed
-if ! command -v bun &> /dev/null; then
+# Check if Bun is installed (try full path if not in PATH)
+if [ -x "$BUN_PATH/bun" ]; then
+    BUN_BIN="$BUN_PATH/bun"
+elif command -v bun &> /dev/null; then
+    BUN_BIN="bun"
+else
     echo -e "${RED}❌ Error: Bun is not installed${NC}"
     echo "   Install Bun from: https://bun.sh"
+    echo "   Or set BUN_PATH to bun location"
     exit 1
 fi
+
+echo "   Using Bun at: $BUN_BIN"
 
 echo -e "${BLUE}📁 Creating directory structure...${NC}"
 
@@ -83,7 +90,7 @@ if [ -f "$MISSION_CONTROL_DIR/mission-control.db" ]; then
 else
     echo -e "${BLUE}🗄️  Creating SQLite database...${NC}"
 
-    sqlite3 "$MISSION_CONTROL_DIR/mission-control.db" < "$REPO_DIR/mission-control-core/schema.sql"
+    $BUN_BIN $REPO_DIR/mission-control-core/scripts/init-db.ts
 
     echo -e "${GREEN}   ✓ Database created${NC}"
     echo -e "${GREEN}   ✓ Agents registered (10 agents)${NC}"
