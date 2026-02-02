@@ -1,0 +1,17 @@
+[Unit]
+Description=OpenClaw Mission Control API Server
+After=network.target
+
+[Service]
+Type=simple
+User=nisheeth
+WorkingDirectory=/home/nisheeth/.openclaw/workspace/projects/openclaw-mission-control/mission-control-api
+Environment="NODE_ENV=production"
+Environment="DB_PATH=/home/nisheeth/.openclaw/workspace/mission-control/mission-control.db"
+Environment="WORKSPACE_PATH=/home/nisheeth/.openclaw/workspace/mission-control"
+ExecStart=/home/nisheeth/.bun/bin/bun run start
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

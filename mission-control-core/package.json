@@ -1,0 +1,26 @@
+{
+  "name": "mission-control-core",
+  "version": "1.0.0",
+  "description": "OpenClaw Mission Control - Core backend scripts and database schema",
+  "type": "module",
+  "scripts": {
+    "heartbeat": "bun run scripts/heartbeat.ts",
+    "notification-daemon": "bun run scripts/notification-daemon.ts",
+    "daily-standup": "bun run scripts/daily-standup.ts"
+  },
+  "keywords": [
+    "openclaw",
+    "mission-control",
+    "multi-agent"
+  ],
+  "author": "OpenClaw",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.6"
+  }
+}

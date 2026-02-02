@@ -1,0 +1,144 @@
+{
+  "agents": [
+    {
+      "name": "Jarvis",
+      "session_key": "agent:orchestrator:main",
+      "role": "orchestrator",
+      "emoji": "🤖",
+      "description": "Main coordinator and orchestrator",
+      "heartbeat_schedule": "*/15 * * * *",
+      "capabilities": [
+        "coordinate_agents",
+        "allocate_tasks",
+        "monitor_progress",
+        "resolve_conflicts"
+      ]
+    },
+    {
+      "name": "Shuri",
+      "session_key": "agent:engineer:main",
+      "role": "engineer",
+      "emoji": "🔬",
+      "description": "Technical implementation and engineering",
+      "heartbeat_schedule": "2,17,32,47 * * * *",
+      "capabilities": [
+        "write_code",
+        "debug_issues",
+        "deploy_infrastructure",
+        "optimize_performance"
+      ]
+    },
+    {
+      "name": "Fury",
+      "session_key": "agent:director:main",
+      "role": "director",
+      "emoji": "🎯",
+      "description": "Strategy, planning, and decision-making",
+      "heartbeat_schedule": "4,19,34,49 * * * *",
+      "capabilities": [
+        "strategic_planning",
+        "resource_allocation",
+        "risk_assessment",
+        "priority_setting"
+      ]
+    },
+    {
+      "name": "Vision",
+      "session_key": "agent:analyst:main",
+      "role": "analyst",
+      "emoji": "📊",
+      "description": "Data analysis and insights",
+      "heartbeat_schedule": "6,21,36,51 * * * *",
+      "capabilities": [
+        "data_analysis",
+        "generate_reports",
+        "trend_analysis",
+        "metric_tracking"
+      ]
+    },
+    {
+      "name": "Loki",
+      "session_key": "agent:creative:main",
+      "role": "creative",
+      "emoji": "🎭",
+      "description": "Marketing, content, and creative work",
+      "heartbeat_schedule": "8,23,38,53 * * * *",
+      "capabilities": [
+        "content_creation",
+        "marketing_strategy",
+        "brand_voice",
+        "copywriting"
+      ]
+    },
+    {
+      "name": "Quill",
+      "session_key": "agent:researcher:main",
+      "role": "researcher",
+      "emoji": "🔍",
+      "description": "Deep research and information gathering",
+      "heartbeat_schedule": "10,25,40,55 * * * *",
+      "capabilities": [
+        "deep_research",
+        "fact_checking",
+        "information_synthesis",
+        "knowledge_management"
+      ]
+    },
+    {
+      "name": "Wanda",
+      "session_key": "agent:optimizer:main",
+      "role": "optimizer",
+      "emoji": "⚡",
+      "description": "Performance optimization and automation",
+      "heartbeat_schedule": "12,27,42,57 * * * *",
+      "capabilities": [
+        "optimize_workflows",
+        "automate_tasks",
+        "reduce_costs",
+        "improve_efficiency"
+      ]
+    },
+    {
+      "name": "Pepper",
+      "session_key": "agent:manager:main",
+      "role": "manager",
+      "emoji": "💼",
+      "description": "Operations and management",
+      "heartbeat_schedule": "14,29,44,59 * * * *",
+      "capabilities": [
+        "manage_operations",
+        "coordinate_teams",
+        "handle_admin",
+        "process_improvement"
+      ]
+    },
+    {
+      "name": "Friday",
+      "session_key": "agent:assistant:main",
+      "role": "assistant",
+      "emoji": "📅",
+      "description": "Scheduling, reminders, and assistance",
+      "heartbeat_schedule": "1,16,31,46 * * * *",
+      "capabilities": [
+        "manage_calendar",
+        "set_reminders",
+        "schedule_meetings",
+        "personal_assistant"
+      ]
+    },
+    {
+      "name": "Wong",
+      "session_key": "agent:librarian:main",
+      "role": "librarian",
+      "emoji": "📚",
+      "description": "Documentation and knowledge management",
+      "heartbeat_schedule": "3,18,33,48 * * * *",
+      "capabilities": [
+        "manage_documents",
+        "organize_knowledge",
+        "create_documentation",
+        "maintain_wiki"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "mission-control-api",
+  "version": "1.0.0",
+  "description": "OpenClaw Mission Control - Express API server",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "bun run --watch src/server.ts",
+    "build": "bun build src/server.ts --outdir dist",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "openclaw",
+    "mission-control",
+    "api",
+    "express"
+  ],
+  "author": "OpenClaw",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "better-sqlite3": "^11.7.0",
+    "ws": "^8.18.0",
+    "dotenv": "^16.4.7",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.6",
+    "@types/ws": "^8.5.13",
+    "@types/cors": "^2.8.17",
+    "typescript": "^5.7.3"
+  }
+}
